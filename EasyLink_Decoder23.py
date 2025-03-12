@@ -7,9 +7,10 @@ import random
 import string
 #import graphics
 import hashlib
+import uuid
 import binascii
 
-salt = "w4L2M1QR"
+salt = "095826fd6ca248cba61538f0d48eec80"
 
 def INTRO():
     print("====================================================")
@@ -64,21 +65,27 @@ def runAgain():
 def wordCHANGER():
 #=======================[WPA2 KEYGEN]===================
 
-    md5 = hashlib.md5( (SSID+salt).encode('utf-8')) 
-    md5hex = md5.hexdigest()
-    buffer = md5hex[0:20]
+    # hash = hashlib.md5( (SSID+salt).encode('utf-8'))
+    hash = hashlib.blake2s((SSID + salt).encode('utf-8'))  # Always 32 chars
+
+    hashHex = hash.hexdigest()
+    buffer = hashHex[0:20]
     
     rand20key = buffer
 
 #=======================[ADD PASSWORD]==================
-    md5A = hashlib.md5( (SSIDA+salt).encode('utf-8')) 
-    md5B = hashlib.md5( (SSIDB+salt).encode('utf-8')) 
+    # hashA = hashlib.md5( (SSIDA+salt).encode('utf-8')) 
+    # hashB = hashlib.md5( (SSIDB+salt).encode('utf-8'))
+    hashA = hashlib.blake2s((SSIDA + salt).encode('utf-8'))
+    hashB = hashlib.blake2s((SSIDB + salt).encode('utf-8'))
 
-    md5Ahex = md5A.hexdigest()
-    md5Bhex = md5B.hexdigest()
+    
 
-    abuffer = md5Ahex[0:7]
-    bbuffer = md5Bhex[0:7]
+    hashAHex = hashA.hexdigest()
+    hashBHex = hashB.hexdigest()
+
+    abuffer = hashAHex[0:7]
+    bbuffer = hashBHex[0:7]
 
     abuffer = abuffer + "A"
     bbuffer = bbuffer + "B"
